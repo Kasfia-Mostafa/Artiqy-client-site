@@ -43,8 +43,8 @@ export const Form = () => {
       console.error("Error uploading image:", error);
     }
     createUser(email, password).then((result) => {
-      const loggedUser = result.user;
-    //   console.log(loggedUser);
+        const loggedUser = result.user;
+        console.log(loggedUser);
       updateUserProfile(name, photo)
         .then(() => {
           const userInfo = {
@@ -62,7 +62,7 @@ export const Form = () => {
                 showConfirmButton: false,
                 timer: 1500,
               });
-              navigate("/");
+              navigate("/home/main");
             }
           });
         })
@@ -79,7 +79,7 @@ export const Form = () => {
       };
       axiosPublic.post("/users", userInfo).then((res) => {
         console.log(res.data);
-        navigate("/");
+        navigate("/home/main");
       });
     });
   };
@@ -102,7 +102,7 @@ export const Form = () => {
         showConfirmButton: false,
         timer: 1500,
       });
-      navigate("/");
+      navigate("/home/main");
     });
   };
 
@@ -115,7 +115,7 @@ export const Form = () => {
       };
       axiosPublic.post("/users", userInfo).then((res) => {
         console.log(res.data);
-        navigate("/");
+        navigate("/home/main");
       });
     });
   };
