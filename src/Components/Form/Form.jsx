@@ -1,5 +1,8 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import useAxiosPublic from "../../Hooks/useAxiosPublic";
+import { AuthContext } from "../../Utility/Providers/AuthProviders";
+import Swal from "sweetalert2";
 
 const image_hosting_key = import.meta.env.VITE_image_hosting_key;
 const image_hosting_api = `https://api.imgbb.com/1/upload?expiration=600&key=${image_hosting_key}`;
@@ -7,11 +10,121 @@ const image_hosting_api = `https://api.imgbb.com/1/upload?expiration=600&key=${i
 export const Form = () => {
   const [register, setRegister] = useState(false);
   const [showName1, setShowName1] = useState({});
+
+  const { createUser, googleSignIn, updateUserProfile, signIn, reset } =
+    useContext(AuthContext);
+  const navigate = useNavigate();
+  const axiosPublic = useAxiosPublic();
+
+  // Register part
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const form = event.target;
+    const name = form.name.value;
+    const email = form.email.value;
+    const password = form.password.value;
+    const photo = form.photo.files[0];
+
+    // Check if photo is defined before proceeding
+    if (!photo) {
+      console.error("No photo selected");
+      return;
+    }
+    const imageFile = new FormData();
+    imageFile.append("image", photo); // Use the retrieved photo
+    try {
+      const res = await axiosPublic.post(image_hosting_api, imageFile, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log("Image uploaded successfully:", res.data);
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    }
+    createUser(email, password).then((result) => {
+      const loggedUser = result.user;
+    //   console.log(loggedUser);
+      updateUserProfile(name, photo)
+        .then(() => {
+          const userInfo = {
+            name: name,
+            email: email,
+          };
+          axiosPublic.post("/users", userInfo).then((res) => {
+            if (res.data.insertedId) {
+              console.log("user added to database");
+              reset();
+              Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Register successfully",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+              navigate("/");
+            }
+          });
+        })
+        .catch((error) => console.log(error));
+    });
+  };
+
+  const handleGoogleRegister = () => {
+    googleSignIn().then((result) => {
+      console.log(result.user);
+      const userInfo = {
+        email: result.user?.email,
+        name: result.user?.displayName,
+      };
+      axiosPublic.post("/users", userInfo).then((res) => {
+        console.log(res.data);
+        navigate("/");
+      });
+    });
+  };
+
+  // login part
+
+  const handleLogin = (event) => {
+    event.preventDefault();
+    const form = event.target;
+    const email = form.email.value;
+    const password = form.password.value;
+    // console.log(email, password);
+    signIn(email, password).then((result) => {
+      const user = result.user;
+      console.log(user);
+      Swal.fire({
+        position: "top-center",
+        icon: "success",
+        title: "Login Successfully",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      navigate("/");
+    });
+  };
+
+  const handleGoogleLogin = () => {
+    googleSignIn().then((result) => {
+      console.log(result.user);
+      const userInfo = {
+        email: result.user?.email,
+        name: result.user?.displayName,
+      };
+      axiosPublic.post("/users", userInfo).then((res) => {
+        console.log(res.data);
+        navigate("/");
+      });
+    });
+  };
   return (
     <div className="flex items-center h-[100vh]">
       <div className="w-80 md:w-96 lg:w-[800px] mx-auto bg-white flex items-center relative overflow-hidden shadow-xl">
         {/* register form  */}
         <form
+          onSubmit={handleSubmit}
           className={`p-8 w-full ${
             register
               ? "lg:translate-x-0"
@@ -28,24 +141,30 @@ export const Form = () => {
             <input
               id="name"
               type="name"
+              name="name"
+              required=""
               placeholder="John Doe"
               className="p-3 block w-full outline-none border rounded-md invalid:border-red-700 valid:border-black"
             />
-            <label htmlFor="u_email" className="block">
+            <label htmlFor="email" className="block">
               Email
             </label>
             <input
-              id="u_email"
-              type="u_email"
+              id="email"
+              type="email"
+              name="email"
+              required=""
               placeholder="example@example.com"
               className="p-3 block w-full outline-none border rounded-md invalid:border-red-700 valid:border-black"
             />
-            <label htmlFor="u_password" className="block">
+            <label htmlFor="password" className="block">
               Password
             </label>
             <input
-              id="u_password"
-              type="u_password"
+              id="password"
+              type="password"
+              name="password"
+              required=""
               placeholder=".............."
               min={5}
               className="p-3 block w-full outline-none border rounded-md invalid:border-red-700 valid:border-black"
@@ -65,19 +184,20 @@ export const Form = () => {
                 }}
                 className="hidden"
                 type="file"
-                name=""
+                name="photo"
                 id="type3-3"
               />
             </div>
           </div>
           {/* button type will be submit for handling form submission*/}
           <div className="flex justify-center my-3">
-          <button className="text-xl w-28 h-10 bg-sky-500 text-white relative overflow-hidden group z-10 hover:text-white duration-1000">
+            <button className="text-xl w-32 h-10 bg-sky-500 text-white relative overflow-hidden group z-10 hover:text-white duration-1000">
               <span className="absolute bg-sky-600 size-36 rounded-full group-hover:scale-100 scale-0 -z-10 -left-2 -top-10 group-hover:duration-500 duration-700 origin-center transform transition-all"></span>
               <span className="absolute bg-sky-800 size-36 -left-2 -top-10 rounded-full group-hover:scale-100 scale-0 -z-10 group-hover:duration-700 duration-500 origin-center transform transition-all"></span>
               Register
             </button>{" "}
           </div>
+
           <p className="mb-3 text-center">
             Already have an account?
             <Link
@@ -91,6 +211,7 @@ export const Form = () => {
           </p>
           <hr />
           <button
+            onClick={handleGoogleRegister}
             type="button"
             className="py-2 px-5 mb-4 mt-8 mx-auto block shadow-lg border rounded-md border-black"
           >
@@ -170,26 +291,27 @@ export const Form = () => {
         </div>
         {/* login form */}
         <form
+          onSubmit={handleLogin}
           className={`p-8 w-full mr-0 ml-auto duration-500 ${
             register ? "lg:translate-x-full hidden lg:block" : ""
           }`}
         >
           <h1 className="backdrop-blur-sm text-2xl lg:text-4xl pb-4">Login</h1>
           <div className="space-y-5">
-            <label htmlFor="_email" className="block">
+            <label htmlFor="email" className="block">
               Email
             </label>
             <input
-              id="_email"
+              id="email"
               type="email"
               placeholder="example@example.com"
               className="p-3 block w-full outline-none border rounded-md invalid:border-red-700 valid:border-black"
             />
-            <label htmlFor="_password" className="block">
+            <label htmlFor="password" className="block">
               Password
             </label>
             <input
-              id="_password"
+              id="password"
               type="password"
               placeholder=".............."
               min={5}
@@ -198,7 +320,7 @@ export const Form = () => {
           </div>
           {/* button type will be submit for handling form submission*/}
           <div className="flex justify-center my-3">
-            <button className="text-xl w-28 h-10 bg-sky-500 text-white relative overflow-hidden group z-10 hover:text-white duration-1000">
+            <button className="text-xl w-32 h-10 bg-sky-500 text-white relative overflow-hidden group z-10 hover:text-white duration-1000">
               <span className="absolute bg-sky-600 size-36 rounded-full group-hover:scale-100 scale-0 -z-10 -left-2 -top-10 group-hover:duration-500 duration-700 origin-center transform transition-all"></span>
               <span className="absolute bg-sky-800 size-36 -left-2 -top-10 rounded-full group-hover:scale-100 scale-0 -z-10 group-hover:duration-700 duration-500 origin-center transform transition-all"></span>
               Login
@@ -217,6 +339,7 @@ export const Form = () => {
           </p>
           <hr />
           <button
+            onClick={handleGoogleLogin}
             type="button"
             className="py-2 px-5 mb-4 mt-8 mx-auto block shadow-lg border rounded-md border-black"
           >
