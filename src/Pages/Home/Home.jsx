@@ -1,4 +1,5 @@
-import ProfileSide from "../../Components/ProfileSide/ProfileSide"
+import PostSide from "../../Components/PostSide/PostSide";
+import ProfileSide from "../../Components/ProfileSide/ProfileSide";
 
 const Home = () => {
   return (
@@ -7,12 +8,13 @@ const Home = () => {
         <ProfileSide></ProfileSide>
       </div>
 
-
-
-      <div className="col-span-2">Post</div>
+      <div className="col-span-2">
+        <PostSide></PostSide>
+      </div>
+      
       <div className="col-span-1">Right</div>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
