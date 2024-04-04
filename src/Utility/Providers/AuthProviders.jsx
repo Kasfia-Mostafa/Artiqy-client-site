@@ -4,11 +4,11 @@ import {
   getAuth,
   onAuthStateChanged,
   createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
   signOut,
   updateProfile,
   signInWithPopup,
   GoogleAuthProvider,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
 
@@ -20,7 +20,7 @@ const AuthProviders = ({ children }) => {
   const googleProvider = new GoogleAuthProvider();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const axiosPublic = useAxiosPublic();
+  // const axiosPublic = useAxiosPublic();
 
   const createUser = (email, password) => {
     setLoading(true);
@@ -37,11 +37,34 @@ const AuthProviders = ({ children }) => {
     return signOut(auth);
   };
 
-  const updateUserProfile = (name, photo) => {
-    return updateProfile(auth.currentUser, {
-      displayName: name,
-      photoURL: photo,
-    });
+  const updateUserProfile = async (name, photo) => {
+    try {
+      // Check if photo is provided
+      if (photo) {
+        // Upload the photo to a storage service
+        const photoURL = await uploadPhotoAndGetURL(photo);
+        await updateProfile(auth.currentUser, {
+          displayName: name,
+          photoURL: photoURL,
+        });
+      } else {
+        await updateProfile(auth.currentUser, {
+          displayName: name,
+        });
+      }
+
+      console.log("User profile updated successfully");
+    } catch (error) {
+      console.error("Error updating user profile:", error);
+      throw error; // Re-throw the error for handling in the calling code
+    }
+  };
+
+  // Function to upload photo and get its URL (Replace with your implementation)
+  const uploadPhotoAndGetURL = async (photo) => {
+    // Implement your logic to upload the photo and get its URL
+    // This can involve using a cloud storage service like Firebase Storage, AWS S3, etc.
+    // Return the URL of the uploaded photo
   };
 
   const googleSignIn = () => {
@@ -54,11 +77,11 @@ const AuthProviders = ({ children }) => {
       setUser(currentUser);
       if (currentUser) {
         const userInfo = { email: currentUser.email };
-        axiosPublic.post("/jwt", userInfo).then((res) => {
-          if (res.data.token) {
-            localStorage.setItem("access-token", res.data.token);
-          }
-        });
+        // axiosPublic.post("/jwt", userInfo).then((res) => {
+        //   if (res.data.token) {
+        //     localStorage.setItem("access-token", res.data.token);
+        //   }
+        // });
       } else {
         localStorage.removeItem("access-token");
       }

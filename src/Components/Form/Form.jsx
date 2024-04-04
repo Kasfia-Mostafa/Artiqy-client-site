@@ -11,7 +11,7 @@ export const Form = () => {
   const [register, setRegister] = useState(false);
   const [showName1, setShowName1] = useState({});
 
-  const { createUser, googleSignIn, updateUserProfile, signIn, reset } =
+  const { createUser, googleSignIn, updateUserProfile, signIn } =
     useContext(AuthContext);
   const navigate = useNavigate();
   const axiosPublic = useAxiosPublic();
@@ -19,11 +19,15 @@ export const Form = () => {
   // Register part
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     const form = event.target;
     const name = form.name.value;
     const email = form.email.value;
     const password = form.password.value;
-    const photo = form.photo.files[0];
+
+    // Retrieve the selected photo
+    const photoInput = form.querySelector('input[type="file"][name="photo"]');
+    const photo = photoInput.files[0]; // Get the first selected file
 
     // Check if photo is defined before proceeding
     if (!photo) {
@@ -31,43 +35,42 @@ export const Form = () => {
       return;
     }
     const imageFile = new FormData();
-    imageFile.append("image", photo); // Use the retrieved photo
+    imageFile.append("image", photo);
     try {
-      const res = await axiosPublic.post(image_hosting_api, imageFile, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const res = await axiosPublic.post(image_hosting_api, imageFile);
       console.log("Image uploaded successfully:", res.data);
+      createUser(email, password).then((result) => {
+        const loggedUser = result.user;
+        console.log(loggedUser);
+
+        // Update user profile with name and photo
+        updateUserProfile(name, photo)
+          .then(() => {
+            const userInfo = {
+              name: name,
+              email: email,
+            };
+
+            // Send user information to "/users" endpoint
+            axiosPublic.post("/users", userInfo).then((res) => {
+              if (res.data.insertedId) {
+                console.log("User added to database");
+                Swal.fire({
+                  position: "top-end",
+                  icon: "success",
+                  title: "Register successfully",
+                  showConfirmButton: false,
+                  timer: 1500,
+                });
+                navigate("/home/main");
+              }
+            });
+          })
+          .catch((error) => console.log(error));
+      });
     } catch (error) {
       console.error("Error uploading image:", error);
     }
-    createUser(email, password).then((result) => {
-        const loggedUser = result.user;
-        console.log(loggedUser);
-      updateUserProfile(name, photo)
-        .then(() => {
-          const userInfo = {
-            name: name,
-            email: email,
-          };
-          axiosPublic.post("/users", userInfo).then((res) => {
-            if (res.data.insertedId) {
-              console.log("user added to database");
-              reset();
-              Swal.fire({
-                position: "top-end",
-                icon: "success",
-                title: "Register successfully",
-                showConfirmButton: false,
-                timer: 1500,
-              });
-              navigate("/home/main");
-            }
-          });
-        })
-        .catch((error) => console.log(error));
-    });
   };
 
   const handleGoogleRegister = () => {
