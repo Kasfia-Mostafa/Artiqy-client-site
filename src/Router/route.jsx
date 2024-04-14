@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import Main from "../Main/Main";
 import { Form } from "../Components/Form/Form";
 import Social from "../Social/Social";
+import Dashboard from "../Pages/Home/Dashboard/Dashboard";
 
 export const router = createBrowserRouter([
   {
@@ -15,6 +16,10 @@ export const router = createBrowserRouter([
       {
         path: "main",
         element: <Main></Main>,
+      },
+      {
+        path: "dashboard",
+        element: <Dashboard></Dashboard>,
       },
     ],
   },
