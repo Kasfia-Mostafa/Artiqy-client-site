@@ -2,8 +2,7 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../../Utility/Providers/AuthProviders";
 import { useNavigate } from "react-router-dom";
 const ProfileCard = () => {
-
-  const {  user,logOut } = useContext(AuthContext);
+  const { user, logOut } = useContext(AuthContext);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -16,6 +15,8 @@ const ProfileCard = () => {
         setError(error.massage);
       });
   };
+
+  // console.log(user)
 
   return (
     <div className="flex justify-center">
@@ -30,7 +31,7 @@ const ProfileCard = () => {
           <img
             className="w-[100px] h-[100px] absolute -bottom-10 left-1/2 -translate-x-1/2 rounded-full bg-gray-400 "
             src={user?.photoURL}
-            alt="card navigate ui"
+            alt="Profile Image"
           />
         </div>
         {/* profile name & role */}
@@ -53,8 +54,11 @@ const ProfileCard = () => {
             <h5 className="font-medium text-xl">217</h5>
             <p className="text-sm  text-gray-400">Following</p>
           </div>
-          
-          <button onClick={handleSignOut} className="hover:bg-[#f0f8ff] hover:scale-95 font-medium hover:text-black w-[100%] py-2 rounded-xl hover:shadow-xl   text-black shadow-[0px_0px_10px_#E2DADA]  duration-500 mt-5">
+
+          <button
+            onClick={handleSignOut}
+            className="hover:bg-[#f0f8ff] hover:scale-95 font-medium hover:text-black w-[100%] py-2 rounded-xl hover:shadow-xl   text-black shadow-[0px_0px_10px_#E2DADA]  duration-500 mt-5"
+          >
             Log Out
           </button>
         </div>

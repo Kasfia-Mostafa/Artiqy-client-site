@@ -1,11 +1,23 @@
-import { useContext } from "react";
+import { useContext, useRef, useState } from "react";
 import { AuthContext } from "../../../Utility/Providers/AuthProviders";
 import { UilScenery } from "@iconscout/react-unicons";
 import { UilPlayCircle } from "@iconscout/react-unicons";
 import { UilLocationPoint } from "@iconscout/react-unicons";
 import { UilSchedule } from "@iconscout/react-unicons";
+import { FaTimesCircle } from "react-icons/fa";
 const PostShare = () => {
   const { user } = useContext(AuthContext);
+  const [image, setImage] = useState(null);
+  const imageRef = useRef();
+
+  const onImageChange = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      let img = event.target.files[0];
+      setImage({
+        image: URL.createObjectURL(img),
+      });
+    }
+  };
 
   return (
     <div className="flex gap-4 bg-[#e6f2fc] p-4 rounded-md">
@@ -18,8 +30,11 @@ const PostShare = () => {
           type="text"
           placeholder="Share your imaginations..."
         />
-        <div className="flex justify-around">
-          <div className="flex justify-center items-center gap-2">
+        <div className="flex justify-around cursor-pointer">
+          <div
+            className="flex justify-center items-center gap-2"
+            onClick={() => imageRef.current.click()}
+          >
             <UilScenery className="text-teal-600" />
             Photo
           </div>
@@ -44,7 +59,24 @@ const PostShare = () => {
             </span>
             Share
           </button>
+          <div className="hidden">
+            <input
+              type="file"
+              name="myImage"
+              ref={imageRef}
+              onChange={onImageChange}
+            />
+          </div>
         </div>
+        {image && (
+          <div className="relative">
+            <FaTimesCircle
+              className="text-2xl text-white cursor-pointer absolute top-2 right-3"
+              onClick={() => setImage(null)}
+            />
+            <img className="w-full max-h-96" src={image.image} alt="post image" />
+          </div>
+        )}
       </div>
     </div>
   );
