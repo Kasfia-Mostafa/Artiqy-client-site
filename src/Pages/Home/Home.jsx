@@ -1,5 +1,6 @@
 import PostSide from "../../Components/PostSide/PostSide";
 import ProfileSide from "../../Components/ProfileSide/ProfileSide";
+import RightSide from "../../Components/RightSide/RightSide";
 
 const Home = () => {
   return (
@@ -12,7 +13,9 @@ const Home = () => {
         <PostSide></PostSide>
       </div>
       
-      <div className="col-span-1">Right</div>
+      <div className="col-span-1">
+        <RightSide />
+      </div>
     </div>
   );
 };

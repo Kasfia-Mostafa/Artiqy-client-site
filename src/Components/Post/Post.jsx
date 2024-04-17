@@ -1,20 +1,30 @@
-import { FaHeart, FaRegCommentDots } from "react-icons/fa";
 import Share from "../Buttons/Share/Share";
 
 const Post = ({ post }) => {
   return (
-    <div className="flex flex-col gap-4 bg-sky-100 p-2">
+    <div className="flex flex-col gap-4 bg-white p-2 rounded-md">
       <img
-        className="w-full max-h-96 object-fit rounded-md"
+        className="w-full max-h-fit object-fit rounded-md"
         src={post.img}
         alt=""
       />
 
-      <div className="flex gap-4 items-start justify-around">
-        <FaHeart className="text-2xl text-blue-700 hover:text-teal-600" />
-        <FaRegCommentDots className="text-2xl text-blue-700 hover:text-teal-600" />
+      <div className="flex gap-4 items-start justify-around cursor-pointer">
+        <lord-icon
+          src="https://cdn.lordicon.com/biobqpgs.json"
+          trigger="hover"
+          colors="primary:#e83a30,secondary:#ebe6ef,tertiary:#ffc738,quaternary:#f9c9c0,quinary:#f24c00"
+          style={{ width: "30px", height: "30px" }}
+        ></lord-icon>
+        <lord-icon
+          src="https://cdn.lordicon.com/vhyuhmbl.json"
+          trigger="hover"
+           colors="primary:#9ce5f4,secondary:#66d7ee,tertiary:#16a9c7"
+          style={{ width: "30px", height: "30px" }}
+        />
+
         <div>
-        <Share />
+          <Share />
         </div>
       </div>
 

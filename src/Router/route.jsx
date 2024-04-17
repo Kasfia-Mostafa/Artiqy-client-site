@@ -3,6 +3,7 @@ import Main from "../Main/Main";
 import { Form } from "../Components/Form/Form";
 import Social from "../Social/Social";
 import Dashboard from "../Pages/Home/Dashboard/Dashboard";
+import Profile from "../Pages/Profile/Profile";
 
 export const router = createBrowserRouter([
   {
@@ -16,6 +17,10 @@ export const router = createBrowserRouter([
       {
         path: "main",
         element: <Main></Main>,
+      },
+      {
+        path: "profile",
+        element: <Profile />,
       },
       {
         path: "dashboard",

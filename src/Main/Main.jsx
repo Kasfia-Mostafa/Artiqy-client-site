@@ -1,4 +1,5 @@
 import Home from "../Pages/Home/Home"
+import Profile from "../Pages/Profile/Profile"
 import "./Main.css"
 
 
@@ -7,7 +8,8 @@ const Main = () => {
     <div className="Main">
       <div className="blur" style={{top: '-18%',right:'0'}}></div>
       <div className="blur" style={{top: '36%',left:'-8rem'}}></div>
-      <Home></Home>
+      {/* <Home></Home> */}
+      <Profile></Profile>
     </div>
   )
 }
