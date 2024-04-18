@@ -3,8 +3,9 @@ import { AuthContext } from "../../Utility/Providers/AuthProviders";
 
 const ProfileCard = () => {
   const { user } = useContext(AuthContext);
-  console.log(user)
-  
+  const ProfilePage = false;
+  // console.log(user)
+
   const svgs = [
     {
       svg: (
@@ -211,7 +212,7 @@ const ProfileCard = () => {
   ];
 
   return (
-    <div className="mx-auto mt-16 mb-4 flex max-w-full flex-col items-center justify-center space-y-4 rounded-2xl bg-white  shadow-md text-black ">
+    <div className="bg-gradient-to-r from-teal-100 to-sky-100 mx-auto mt-2 mb-4 pb-4 flex max-w-full flex-col items-center justify-center space-y-4 rounded-2xl bg-white shadow-md text-black ">
       <div className="relative w-full">
         <img
           width={350}
@@ -228,23 +229,28 @@ const ProfileCard = () => {
           alt="Profile Picture"
         />
       </div>
-      <div className="space-y-1 text-center text-black">
-        <h1 className="text-2xl text-black dark:text-white/90">Nullify</h1>
-        <p className="text-sm text-gray-400">UI/UX Designer</p>
+      <div className="space-y-2 text-center text-black">
+        <h1 className="text-2xl mt-10 text-sky-700">{user?.displayName}</h1>
+        <p className="text-sm text-teal-700">UI/UX Designer</p>
+        <div>{ProfilePage ? "" : <span className="text-black">My Profile</span>}</div>
       </div>
-      <div className="flex w-full justify-evenly py-2">
-        <div className="space-y-1 text-center">
-          <p className="text-black">Posts</p>
-          <p className="font-mono text-xl text-black">11</p>
-        </div>
-        <div className="space-y-1 text-center">
-          <p className="text-black ">Following</p>
-          <p className="font-mono text-xl text-black ">250</p>
-        </div>
-        <div className="space-y-1 text-center ">
-          <p className="text-black ">Followers</p>
-          <p className="font-mono text-xl text-black ">11</p>
-        </div>
+      <div className="flex w-full justify-evenly">
+        {ProfilePage && (
+          <>
+            <div className="space-y-1 text-center">
+              <p className="text-black ">Following</p>
+              <p className="font-mono text-xl text-black ">250</p>
+            </div>
+            <div className="space-y-1 text-center ">
+              <p className="text-black ">Followers</p>
+              <p className="font-mono text-xl text-black ">11</p>
+            </div>
+            <div className="space-y-1 text-center">
+              <p className="text-black">Posts</p>
+              <p className="font-mono text-xl text-black">11</p>
+            </div>
+          </>
+        )}
       </div>
       {/* bio  */}
       <p className="pb-2 text-center text-sm text-black">
@@ -262,6 +268,7 @@ const ProfileCard = () => {
           </div>
         ))}
       </div>
+      
     </div>
   );
 };
