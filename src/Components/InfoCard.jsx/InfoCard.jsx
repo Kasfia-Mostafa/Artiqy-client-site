@@ -1,12 +1,13 @@
 import { useState } from "react";
+import Logout from "../Buttons/LogOut/Logout";
 
 const InfoCard = () => {
   // const [modalOpen, setModalOpen] = useState(false);
   return (
-    <div className="flex flex-col gap-2 bg-blue-100 p-4 rounded-md mt-6 h-80">
-      <div className="flex justify-between">
-        <h4 >Your Info</h4>
-        <div className="">
+    <div className="flex flex-col gap-2 bg-sky-100 p-4 rounded-md mt-6 h-80">
+      <div className="flex justify-center">
+        <h4 className="text-lg" >Your Info</h4>
+        <div>
         <lord-icon
           src="https://cdn.lordicon.com/ylvuooxd.json"
           trigger="hover"
@@ -19,11 +20,12 @@ const InfoCard = () => {
           {/* <ProfileModal modalOpen={modalOpen} setModalOpen={setModalOpen} /> */}
         </div>
       </div>
-      <div>
+     <div className="my-10 space-y-4">
+     <div>
         <span>
-          <b>Staus </b>
+          <b>Status </b>
         </span>
-        <span>In Relationship</span>
+        <span>In a Relationship</span>
       </div>
       <div>
         <span>
@@ -37,8 +39,9 @@ const InfoCard = () => {
         </span>
         <span>Artiqy.co</span>
       </div>
+     </div>
 
-      <button>Logout</button>
+      <Logout />
     </div>
   );
 };

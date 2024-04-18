@@ -1,7 +1,7 @@
 import { Followers } from "../../Data/Data";
 const FollowersCard = () => {
   return (
-    <div className="w-5/6 rounded-md gap-4 flex justify-center flex-col p-4">
+    <div className="w-full rounded-md gap-4 flex justify-center flex-col mt-8">
       <div>
         <h3 className="font-bold text-lg text-sky-700">
           Who is following you ?

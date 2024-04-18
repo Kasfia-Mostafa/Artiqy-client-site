@@ -5,7 +5,7 @@ import RightSide from "../../Components/RightSide/RightSide"
 
 const Profile = () => {
     return (
-      <div className="relative grid grid-cols-5 gap-4">
+      <div className="relative grid grid-cols-5 gap-4 h-[100vh]">
           <ProfileLeft></ProfileLeft>
           {/* <div className="flex flex-col gap-4">
               <ProfileCard></ProfileCard>

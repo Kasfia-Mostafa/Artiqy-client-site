@@ -1,3 +1,4 @@
+import FollowersCard from "../FollowersCard/FollowersCard"
 import InfoCard from "../InfoCard.jsx/InfoCard"
 import SearchId from "../SearchId/SearchId"
 
@@ -6,7 +7,7 @@ const ProfileLeft = () => {
     <div className=''>
         <SearchId></SearchId>
         <InfoCard />
-        {/* <Followers /> */}
+        <FollowersCard />
     </div>
   )
 }
