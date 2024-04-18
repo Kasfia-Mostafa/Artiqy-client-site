@@ -2,6 +2,8 @@ import { useState } from "react";
 import Logout from "../Buttons/LogOut/Logout";
 
 const InfoCard = () => {
+
+  
   // const [modalOpen, setModalOpen] = useState(false);
   return (
     <div className="flex flex-col gap-2 bg-sky-100 p-4 rounded-md mt-6 h-80">

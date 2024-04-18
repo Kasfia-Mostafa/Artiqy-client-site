@@ -4,7 +4,7 @@ import SearchId from "../SearchId/SearchId"
 
 const ProfileLeft = () => {
   return (
-    <div className=''>
+    <div className='w-80'>
         <SearchId></SearchId>
         <InfoCard />
         <FollowersCard />

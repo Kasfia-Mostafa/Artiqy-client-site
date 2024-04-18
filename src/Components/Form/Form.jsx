@@ -122,6 +122,7 @@ export const Form = () => {
       });
     });
   };
+
   return (
     <div className="flex items-center h-[100vh]">
       <div className="w-80 md:w-96 lg:w-[800px] mx-auto bg-white flex items-center relative overflow-hidden shadow-xl">

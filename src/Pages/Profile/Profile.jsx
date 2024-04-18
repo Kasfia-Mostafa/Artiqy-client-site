@@ -7,10 +7,10 @@ const Profile = () => {
     return (
       <div className="relative grid grid-cols-5 gap-4 h-[100vh]">
           <ProfileLeft></ProfileLeft>
-          {/* <div className="flex flex-col gap-4">
+          <div className="col-span-3">
               <ProfileCard></ProfileCard>
               <PostSide></PostSide>
-          </div> */}
+          </div>
           <div>
               {/* <RightSide></RightSide> */}
           </div>
