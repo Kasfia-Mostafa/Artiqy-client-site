@@ -20,7 +20,7 @@ const PostShare = () => {
   };
 
   return (
-    <div className="flex gap-4 bg-[#e6f2fc] p-4 rounded-md">
+    <div className="flex gap-4 bg-[#e6f2fc] p-4 rounded-md w-full">
       <div>
         <img className="rounded-full w-10" src={user?.photoURL} alt="" />
       </div>
