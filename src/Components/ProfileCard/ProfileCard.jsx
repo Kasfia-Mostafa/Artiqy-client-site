@@ -3,7 +3,7 @@ import { AuthContext } from "../../Utility/Providers/AuthProviders";
 
 const ProfileCard = () => {
   const { user } = useContext(AuthContext);
-  const ProfilePage = false;
+  const ProfilePage = true;
   // console.log(user)
 
   const svgs = [

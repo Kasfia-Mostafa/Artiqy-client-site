@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@iconscout/react-unicons": "^2.0.2",
+    "@mantine/core": "^7.8.0",
+    "@mantine/hooks": "^7.8.0",
     "axios": "^1.6.8",
     "boxicons": "^2.1.4",
     "firebase": "^10.10.0",
